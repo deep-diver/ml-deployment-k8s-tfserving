@@ -42,6 +42,6 @@ jobs:
       - name: Commit and push the changed running TFServing container(image)
         run: |
           export NEW_IMAGE_NAME=tfserving-${{ env.MODEL_NAME }}:latest
-          export NEW_IMAGE_TAG=gcr.io/${{ env.PROJECT_ID }}/${{ env.NEW_IMAGE_NAME }}
+          export NEW_IMAGE_TAG=gcr.io/${{ env.GCP_PROJECT_ID }}/$NEW_IMAGE_NAME
           docker commit --change "ENV MODEL_NAME ${{ env.MODEL_NAME }}" serving_base $NEW_IMAGE_TAG
           docker images
