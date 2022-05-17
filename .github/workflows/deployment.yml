@@ -27,6 +27,7 @@ jobs:
           
       - name: Extract the SavedModel
         run: |
+          mkdir saved_model
           tar -xvf saved_model.tar.gz --directory saved_model
     
       - name: Display downloaded release
