@@ -16,7 +16,7 @@ be used to serve other models as well.
 - We provide the test code for TFServing in a local environment. Please take a look at [notebooks/TF_Serving.ipynb](...) notebook for this.
 
 - To deploy the custom TFServing image, we define our `deployment.yaml` workflow file inside .github/workflows. It does the following tasks:
-    - Looks for any new release in this repo. A new release contains a compressed [`SavedModel`](https://www.tensorflow.org/guide/saved_model).
+    - Looks for any new release in this repo using [release downloader GitHub Action](https://github.com/robinraju/release-downloader). A new release contains a compressed [`SavedModel`](https://www.tensorflow.org/guide/saved_model).
     - Create a custom Docker image based on CPU optimized TFServing base image.
       - You can find how to compile the CPU optimized TFServing base image [here](https://github.com/tensorflow/serving/blob/master/tensorflow_serving/g3doc/setup.md#optimized-build).
       - Also, you can find how to create a custom TFServing docker image [here](https://www.tensorflow.org/tfx/serving/serving_kubernetes#commit_image_for_deployment).
