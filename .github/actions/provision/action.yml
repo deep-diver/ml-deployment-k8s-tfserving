@@ -21,10 +21,15 @@ runs:
         chmod u+x ./kustomize
       shell: bash
 
+    - name: Update image name
+      working-directory: .kube/experiments/${{ inputs.TARGET_EXPERIMENT }}
+      run: |-
+        ./kustomize edit set image ${{ inputs.NEW_IMAGE_TAG }}        
+      shell: bash
+
     - name: Deploy to GKE
       working-directory: .kube/
       run: |-
-        ./kustomize edit set image ${{ inputs.NEW_IMAGE_TAG }}
         ./kustomize build experiments/${{ inputs.TARGET_EXPERIMENT }} | kubectl apply -f -
         kubectl rollout status deployment/${{ inputs.GKE_DEPLOYMENT_NAME }}
         kubectl get services -o wide
