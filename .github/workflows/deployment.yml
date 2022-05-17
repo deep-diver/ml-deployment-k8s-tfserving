@@ -19,6 +19,24 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: GCP auth
+        uses: google-github-actions/auth@v0
+        with:
+          credentials_json: ${{ secrets.GCP_CREDENTIALS }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v0
+
+      - name: Docker auth
+        run: |-
+          gcloud --quiet auth configure-docker
+      
+      - name: GKE auth
+        uses: google-github-actions/get-gke-credentials@v0
+        with:
+          cluster_name: ${{ env.GKE_CLUSTER }}
+          location: ${{ env.GKE_REGION }}
+          
       - name: Download the latest model release
         uses: robinraju/release-downloader@v1.3
         with:
@@ -44,4 +62,4 @@ jobs:
           export NEW_IMAGE_NAME=tfserving-${{ env.MODEL_NAME }}:latest
           export NEW_IMAGE_TAG=gcr.io/${{ env.GCP_PROJECT_ID }}/$NEW_IMAGE_NAME
           docker commit --change "ENV MODEL_NAME ${{ env.MODEL_NAME }}" serving_base $NEW_IMAGE_TAG
-          docker images
+          docker push $NEW_IMAGE_TAG
