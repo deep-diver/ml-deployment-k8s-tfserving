@@ -45,7 +45,7 @@ We used [Locust](https://locust.io/) to conduct load tests for both TFServing an
 
 👋 **NOTE**
 - Locust doesnt' have a built-in support to write a gRPC based client, so we have written one for ourselves. If you are curious about the implementation, check [this locustfile.py](./locust/locustfile.py) out.
-- For the legend in the plot, `n` means the number of nodes(pods), `c` means the number of CPU cores, `r` means the RAM capacity, `interop` means the number of `[--tensorflow_inter_op_parallelism](https://github.com/tensorflow/serving/blob/b5a11f1e5388c9985a6fc56a58c3421e5f78149f/tensorflow_serving/model_servers/main.cc#L147), and `batch` means the batching configuration is enabled with this [config](https://github.com/deep-diver/ml-deployment-k8s-tfserving/blob/main/.kube/experiments/8vCPU%2B64GB%2Binter_op2_w_batch/tfs-config.yaml).
+- For the legend in the plot, `n` means the number of nodes(pods), `c` means the number of CPU cores, `r` means the RAM capacity, `interop` means the number of [`--tensorflow_inter_op_parallelism`](https://github.com/tensorflow/serving/blob/b5a11f1e5388c9985a6fc56a58c3421e5f78149f/tensorflow_serving/model_servers/main.cc#L147), and `batch` means the batching configuration is enabled with this [config](https://github.com/deep-diver/ml-deployment-k8s-tfserving/blob/main/.kube/experiments/8vCPU%2B64GB%2Binter_op2_w_batch/tfs-config.yaml).
 
 ![](https://i.ibb.co/SBpbGvB/tfserving-load-test.png)
 
