@@ -24,6 +24,10 @@ jobs:
           repository: "deep-diver/ml-deployment-k8s-tfserving"
           latest: true
           fileName: "saved_model.tar.gz"
+          
+      - name: Extract the SavedModel
+        run: |
+          tar -xvf saved_model.tar.gz
     
       - name: Display downloaded release
         run: |
