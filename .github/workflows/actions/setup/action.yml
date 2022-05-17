@@ -1,0 +1,36 @@
+name: "Setup GCP Authentication"
+description: "This action sets up GCP Authentication for GCR and GKE accesses"
+inputs:
+  GCP_CREDENTIALS:
+    required: true
+    description: "The JSON GCP Credentials"
+  GCP_PROJECT_ID:
+    required: true
+    description: "The GCP PROJECT ID"
+  GKE_CLUSTER_NAME:
+    required: true
+    description: "The GKE Cluster name to deploy TFServing"
+  GKE_CLUSTER_ZONE:
+    required: true
+    description: "The GKE Cluster zone to deploy TFServing"
+runs:
+  using: "composite"
+  steps:
+      - name: Git
+        uses: actions/checkout@v2
+        
+      - name: GCP auth
+        uses: google-github-actions/auth@v0
+        with:
+          credentials_json: ${{ inputs.GCP_CREDENTIALS }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v0
+
+      - name: Docker auth
+        run: |-
+          gcloud --quiet auth configure-docker
+      
+      - name: GKE auth
+        run: |-
+          gcloud container clusters get-credentials ${{ inputs.GKE_CLUSTER }} --zone ${{ inputs.GKE_REGION }} --project ${{ inputs.GCP_PROJECT_ID }}  
