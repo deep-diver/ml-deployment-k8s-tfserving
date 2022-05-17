@@ -3,10 +3,11 @@ name: Deployment
 env:
   GCP_PROJECT_ID: "gcp-ml-172005"
   GKE_CLUSTER: "tfs-cluster"
-  GKE_REGION: "us-central1"
+  GKE_REGION: "us-central1-c"
   GKE_DEPLOYMENT: "tfs-server"
   BASE_IMAGE: "gcr.io/gcp-ml-172005/tfs-resnet-cpu-opt"
   MODEL_NAME: "resnet"
+  TARGET_EXPERIMENT: "2vCPU+4GB+inter_op2"
   
 on:
   release:
@@ -36,12 +37,7 @@ jobs:
       
       - name: GKE auth
         run: |-
-          gcloud container clusters get-credentials tfs-cluster --zone us-central1-c --project gcp-ml-172005
-          
-#         uses: google-github-actions/get-gke-credentials@v0
-#         with:
-#           cluster_name: ${{ env.GKE_CLUSTER }}
-#           location: ${{ env.GKE_REGION }}
+          gcloud container clusters get-credentials ${{ env.GKE_CLUSTER }} --zone ${{ env.GKE_REGION }} --project ${{ env.GCP_PROJECT_ID }}
           
       - name: Download the latest model release
         uses: robinraju/release-downloader@v1.3
@@ -69,3 +65,18 @@ jobs:
           export NEW_IMAGE_TAG=gcr.io/${{ env.GCP_PROJECT_ID }}/$NEW_IMAGE_NAME
           docker commit --change "ENV MODEL_NAME ${{ env.MODEL_NAME }}" serving_base $NEW_IMAGE_TAG
           docker push $NEW_IMAGE_TAG
+
+      - name: Set up Kustomize
+        working-directory: .kube/
+        if: steps.changes.outputs.src == 'true'
+        run: |-
+          curl -sfLo kustomize.tar.gz https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv4.1.2/kustomize_v4.1.2_linux_amd64.tar.gz
+          tar -zxvf kustomize.tar.gz
+          chmod u+x ./kustomize
+          
+      - name: Deploy to GKE
+        working-directory: .kube/
+        run: |-
+          ./kustomize build experiments/${{ env.TARGET_EXPERIMENT }} | kubectl apply -f -
+          kubectl rollout status deployment/${{ env.GKE_DEPLOYMENT }}
+          kubectl get services -o wide
