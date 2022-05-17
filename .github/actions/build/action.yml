@@ -38,7 +38,7 @@ runs:
     
       - name: Run the CPU optimized TFServing container
         run: |
-          docker run -d --name serving_base ${{ inputs.BASE_IMAGE }}
+          docker run -d --name serving_base ${{ inputs.BASE_IMAGE_TAG }}
         shell: bash          
           
       - name: Copy the custom model to the running TFServing container
