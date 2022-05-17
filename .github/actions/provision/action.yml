@@ -1,6 +1,9 @@
 name:
 description:
 inputs:
+  BASE_IMAGE_TAG:
+    reuiqred: true
+    description: "The default image tag"
   NEW_IMAGE_TAG:
     required: true
     description: "The image tag to be deployed"
@@ -24,7 +27,7 @@ runs:
     - name: Update image name
       working-directory: .kube/experiments/${{ inputs.TARGET_EXPERIMENT }}
       run: |-
-        ../../kustomize edit set image ${{ inputs.NEW_IMAGE_TAG }}        
+        ../../kustomize edit set image ${{ inputs.BASE_IMAGE_TAG }}=${{ inputs.NEW_IMAGE_TAG }}
       shell: bash
 
     - name: Deploy to GKE
