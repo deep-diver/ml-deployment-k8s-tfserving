@@ -33,4 +33,5 @@ runs:
         ./kustomize build experiments/${{ inputs.TARGET_EXPERIMENT }} | kubectl apply -f -
         kubectl rollout status deployment/${{ inputs.GKE_DEPLOYMENT_NAME }}
         kubectl get services -o wide
+        kubectl descirbe deployment ${{ inputs.GKE_DEPLOYMENT_NAME }}
       shell: bash
