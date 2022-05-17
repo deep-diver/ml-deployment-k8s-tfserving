@@ -1,0 +1,46 @@
+name: 
+description:
+inputs:
+  GCP_PROJECT_ID:
+    reuiqred: true
+    description: "The GCP Project ID"
+  MODEL_RELEASE_REPO:
+    required: true
+    description: "The Github repo where the released models are"
+  MODEL_RELEASE_FILE:
+    required: true
+    description: "The released SavedModel filename compressed in tar.gz"
+  MODEL_NAME:
+    required: true
+    description: "The model name to be exposed by TFServing"
+  BASE_IMAGE_TAG:
+    required: true
+    description: "The base TFServing image to build a custom one upon"
+runs:
+  using: "composite"
+  steps:
+      - name: Download the latest model release
+        uses: robinraju/release-downloader@v1.3
+        with:
+          repository: ${{ inputs.MODEL_RELEASE_REPO }}
+          latest: true
+          fileName: ${{ inputs.MODEL_RELEASE_FILE }}
+          
+      - name: Extract the SavedModel
+        run: |
+          mkdir ${{ inputs.MODEL_NAME }}
+          tar -xvf ${{ inputs.MODEL_RELEASE_FILE }} --strip-components=1 --directory ${{ inputs.MODEL_NAME }}
+    
+      - name: Run the CPU optimized TFServing container
+        run: |
+          docker run -d --name serving_base ${{ inputs.BASE_IMAGE }}
+      - name: Copy the custom model to the running TFServing container
+        run: |
+          docker cp ${{ inputs.MODEL_NAME }} serving_base:/models/${{ inputs.MODEL_NAME }}
+          
+      - name: Commit and push the changed running TFServing container(image)
+        run: |
+          export NEW_IMAGE_NAME=tfserving-${{ inputs.MODEL_NAME }}:latest
+          export NEW_IMAGE_TAG=gcr.io/${{ inputs.GCP_PROJECT_ID }}/$NEW_IMAGE_NAME
+          docker commit --change "ENV MODEL_NAME ${{ inputs.MODEL_NAME }}" serving_base $NEW_IMAGE_TAG
+          docker push $NEW_IMAGE_TAG
