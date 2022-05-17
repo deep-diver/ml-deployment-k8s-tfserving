@@ -1,11 +1,12 @@
 name: Deployment
 
 env:
-  GCP_PROJECT_ID: "fast-ai-exploration"
+  GCP_PROJECT_ID: "gcp-ml-172005"
   GKE_CLUSTER: "tfs-cluster"
   GKE_REGION: "us-central1"
-  IMAGE: "gcr.io/fast-ai-exploration/tfs-k8s"
   GKE_DEPLOYMENT: "tfs-server"
+  BASE_IMAGE: "gcr.io/gcp-ml-172005/tfs-resnet-cpu-opt"
+  MODEL_NAME: "resnet"
   
 on:
   release:
@@ -27,14 +28,20 @@ jobs:
           
       - name: Extract the SavedModel
         run: |
-          mkdir saved_model
-          tar -xvf saved_model.tar.gz --strip-components=1 --directory saved_model
+          mkdir ${{ env.MODEL_NAME }}
+          tar -xvf saved_model.tar.gz --strip-components=1 --directory ${{ env.MODEL_NAME }}
     
-      - name: Build and push Docker image based on the changes
+      - name: Run the CPU optimized TFServing container
         run: |
-          docker run -d --name serving_base gcr.io/gcp-ml-172005/tfs-resnet-cpu-opt
+          docker run -d --name serving_base ${{ env.BASE_IMAGE }}
 
-      - name: Set up Kustomize
+      - name: Copy the custom model to the running TFServing container
         run: |
+          docker cp ${{ env.MODEL_NAME }} serving_base:/models/${{ env.MODEL_NAME }}
+          
+      - name: Commit and push the changed running TFServing container(image)
+        run: |
+          NEW_IMAGE_NAME=tfserving-${{ env.MODEL_NAME }}:latest
+          NEW_IMAGE_TAG=gcr.io/${{ env.PROJECT_ID }}/${{ env.NEW_IMAGE_NAME }}
+          docker commit --change "ENV MODEL_NAME ${{ env.MODEL_NAME }}" serving_base $NEW_IMAGE_TAG
           docker images
-    
