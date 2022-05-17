@@ -28,15 +28,11 @@ jobs:
       - name: Extract the SavedModel
         run: |
           mkdir saved_model
-          tar -xvf saved_model.tar.gz --directory saved_model
-    
-      - name: Display downloaded release
-        run: |
-          ls 
+          tar -xvf saved_model.tar.gz --strip-components=1 --directory saved_model
     
       - name: Build and push Docker image based on the changes
         run: |
-          docker run -d --name serving_base tensorflow/serving
+          docker run -d --name serving_base gcr.io/gcp-ml-172005/tfs-resnet-cpu-opt
 
       - name: Set up Kustomize
         run: |
