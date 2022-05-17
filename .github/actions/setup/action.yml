@@ -31,5 +31,5 @@ runs:
       
       - name: GKE auth
         run: |-
-          gcloud container clusters get-credentials ${{ inputs.GKE_CLUSTER }} --zone ${{ inputs.GKE_CLUSTER_ZONE }} --project ${{ inputs.GCP_PROJECT_ID }}  
+          gcloud container clusters get-credentials ${{ inputs.GKE_CLUSTER_NAME }} --zone ${{ inputs.GKE_CLUSTER_ZONE }} --project ${{ inputs.GCP_PROJECT_ID }}  
         shell: bash          
