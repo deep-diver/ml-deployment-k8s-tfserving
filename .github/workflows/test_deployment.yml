@@ -24,6 +24,9 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+      - name: Git
+        uses: actions/checkout@v2
+        
       - id: setup
         uses: ./.github/actions/setup
         with:
