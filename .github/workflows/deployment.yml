@@ -19,6 +19,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Git
+        uses: actions/checkout@v2
+        
       - name: GCP auth
         uses: google-github-actions/auth@v0
         with:
