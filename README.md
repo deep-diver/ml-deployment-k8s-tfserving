@@ -20,7 +20,7 @@ be used to serve other models as well.
     - Create a custom Docker image based on CPU optimized TFServing base image.
       - You can find how to compile the CPU optimized TFServing base image [here](https://github.com/tensorflow/serving/blob/master/tensorflow_serving/g3doc/setup.md#optimized-build).
       - Also, you can find how to create a custom TFServing docker image [here](https://www.tensorflow.org/tfx/serving/serving_kubernetes#commit_image_for_deployment).
-    - Pushes the latest Docker image to Google Container Register (GCR).
+    - Pushes the latest Docker image to [Google Container Register (GCR)](https://cloud.google.com/container-registry).
     - Deploys the Docker container on the k8s cluster running on GKE. 
 
 
