@@ -1,0 +1,49 @@
+name: Deployment2
+
+env:
+  GCP_PROJECT_ID: "gcp-ml-172005"
+  GKE_CLUSTER_NAME: "tfs-cluster"
+  GKE_ZONE: "us-central1-c"
+  GKE_DEPLOYMENT_NAME: "tfs-server"
+  
+  BASE_IMAGE_TAG: "gcr.io/gcp-ml-172005/tfs-resnet-cpu-opt"
+  MODEL_NAME: "resnet"
+  
+  MODEL_RELEASE_REPO: "deep-diver/ml-deployment-k8s-tfserving"
+  MODEL_RELEASE_FILE: "saved_model.tar.gz"
+  TARGET_EXPERIMENT: "2vCPU+4GB+inter_op2"
+  
+on:
+  release:
+    types: [published]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - id: setup
+        uses: ./.github/actions/setup
+        with:
+          GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
+          GCP_PROJECT_ID: ${{ env.GCP_PROJECT_ID }}
+          GKE_CLUSTER_NAME: ${{ env.GKE_CLUSTER_NAME }}
+          GKE_CLUSTER_ZONE: ${{ env.GKE_ZONE }}
+         
+      - id: build
+        uses: ./.github/actions/build
+        with:
+          GCP_PROJECT_ID: ${{ env.GCP_PROJECT_ID }}
+          MODEL_RELEASE_REPO: ${{ env.MODEL_RELEASE_REPO }}
+          MODEL_RELEASE_FILE: ${{ env.MODEL_RELEASE_FILE }}
+          MODEL_NAME: ${{ env.MODEL_NAME }}
+          BASE_IMAGE_TAG: ${{ env.BASE_IMAGE_TAG }}
+        
+      - id: provision
+        uses: ./.github/actions/build
+        with:
+          NEW_IMAGE_TAG: ${{ steps.build.outputs.NEW_IMAGE_TAG }}
+          TARGET_EXPERIMENT: ${{ env.TARGET_EXPERIMENT }}
+          GKE_DEPLOYMENT_NAME: ${{ env.GKE_DEPLOYMENT_NAME }}
