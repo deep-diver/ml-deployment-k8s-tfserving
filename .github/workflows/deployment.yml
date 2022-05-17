@@ -1,4 +1,4 @@
-name: Deployment2
+name: Deployment
 
 env:
   GCP_PROJECT_ID: "gcp-ml-172005"
