@@ -26,7 +26,57 @@ be used to serve other models as well.
 
 ## Configurations needed beforehand
 
+* Create a k8s cluster on GKE. [Here's](https://www.youtube.com/watch?v=hxpGC19PzwI) a
+relevant resource. 
+* [Create](https://cloud.google.com/iam/docs/creating-managing-service-account-keys) a
+service account key (JSON) file. It's a good practice to only grant it the roles
+required for the project. For example, for this project, we created a fresh service 
+account and granted it permissions for the following: Storage Admin, GKE Developer, and
+GCR Developer. 
+* Crete a secret named `GCP_CREDENTIALS` on your GitHub repository and copy paste the
+contents of the service account key file into the secret. 
+* Configure bucket storage related permissions for the service account:
 
+    ```shell
+    $ export PROJECT_ID=<PROJECT_ID>
+    $ export ACCOUNT=<ACCOUNT>
+    
+    $ gcloud -q projects add-iam-policy-binding ${PROJECT_ID} \
+        --member=serviceAccount:${ACCOUNT}@${PROJECT_ID}.iam.gserviceaccount.com \
+        --role roles/storage.admin
+    
+    $ gcloud -q projects add-iam-policy-binding ${PROJECT_ID} \
+        --member=serviceAccount:${ACCOUNT}@${PROJECT_ID}.iam.gserviceaccount.com \
+        --role roles/storage.objectAdmin
+    
+    gcloud -q projects add-iam-policy-binding ${PROJECT_ID} \
+        --member=serviceAccount:${ACCOUNT}@${PROJECT_ID}.iam.gserviceaccount.com \
+        --role roles/storage.objectCreator
+    ```
+* If you're on the `main` branch already then upon a new push, the worflow defined
+in `.github/workflows/deployment.yaml` should automatically run. Here's how the
+final outputs should look like so ([run link](https://github.com/sayakpaul/ml-deployment-k8s-fastapi/runs/5343002731)):
+
+![](https://i.ibb.co/fDGFbpr/Screenshot-2022-03-01-at-12-25-42-PM.png)
+
+## Notes
+
+* We use [Kustomize](https://kustomize.io) to manage the deployment on k8s.
+
+## Querying the API endpoint
+
+From workflow outputs, you should see something like so:
+
+```shell
+NAME             TYPE           CLUSTER-IP     EXTERNAL-IP     PORT(S)        AGE
+fastapi-server   LoadBalancer   xxxxxxxxxx   xxxxxxxxxx        80:30768/TCP   23m
+kubernetes       ClusterIP      xxxxxxxxxx     <none>          443/TCP        160m
+```
+
+Note the `EXTERNAL-IP` corresponding to `tfs-server` (iff you have named
+your service like so). Then cURL it:
+
+....
 
 ## Acknowledgements
 
