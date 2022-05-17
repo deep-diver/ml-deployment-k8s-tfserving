@@ -24,7 +24,7 @@ runs:
     - name: Update image name
       working-directory: .kube/experiments/${{ inputs.TARGET_EXPERIMENT }}
       run: |-
-        ./kustomize edit set image ${{ inputs.NEW_IMAGE_TAG }}        
+        ../../kustomize edit set image ${{ inputs.NEW_IMAGE_TAG }}        
       shell: bash
 
     - name: Deploy to GKE
