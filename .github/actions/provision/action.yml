@@ -19,6 +19,7 @@ runs:
         curl -sfLo kustomize.tar.gz https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv4.1.2/kustomize_v4.1.2_linux_amd64.tar.gz
         tar -zxvf kustomize.tar.gz
         chmod u+x ./kustomize
+      shell: bash
 
     - name: Deploy to GKE
       working-directory: .kube/
@@ -27,3 +28,4 @@ runs:
         ./kustomize build experiments/${{ inputs.TARGET_EXPERIMENT }} | kubectl apply -f -
         kubectl rollout status deployment/${{ inputs.GKE_DEPLOYMENT_NAME }}
         kubectl get services -o wide
+      shell: bash
