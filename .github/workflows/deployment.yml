@@ -35,10 +35,13 @@ jobs:
           gcloud --quiet auth configure-docker
       
       - name: GKE auth
-        uses: google-github-actions/get-gke-credentials@v0
-        with:
-          cluster_name: ${{ env.GKE_CLUSTER }}
-          location: ${{ env.GKE_REGION }}
+        run: |-
+          gcloud container clusters get-credentials tfs-cluster --zone us-central1-c --project gcp-ml-172005
+          
+#         uses: google-github-actions/get-gke-credentials@v0
+#         with:
+#           cluster_name: ${{ env.GKE_CLUSTER }}
+#           location: ${{ env.GKE_REGION }}
           
       - name: Download the latest model release
         uses: robinraju/release-downloader@v1.3
