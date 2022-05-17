@@ -2,10 +2,10 @@ name: Deployment
 
 env:
   GCP_PROJECT_ID: "fast-ai-exploration"
-  GKE_CLUSTER: "fastapi-cluster"
+  GKE_CLUSTER: "tfs-cluster"
   GKE_REGION: "us-central1"
-  IMAGE: "gcr.io/fast-ai-exploration/fastapi-k8s"
-  GKE_DEPLOYMENT: "fastapi-server"
+  IMAGE: "gcr.io/fast-ai-exploration/tfs-k8s"
+  GKE_DEPLOYMENT: "tfs-server"
   
 on:
   release:
@@ -23,5 +23,6 @@ jobs:
           docker run -d --name serving_base tensorflow/serving
 
       - name: Set up Kustomize
+        run: |
           docker images
     
