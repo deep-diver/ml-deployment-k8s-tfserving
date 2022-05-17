@@ -7,7 +7,7 @@ The idea is to first create a custom TFServing docker image with a TensorFlow mo
 
 👋 **Note**
 - Even though this project uses an image classification its structure and techniques can be used to serve other models as well.
-- There is a counter part project using FastAPI instead of TFServing. If you wonder from how to convert TensorFlow model to ONNX optimized model to deploy it on k8s cluster, please check out the [this repo](https://github.com/sayakpaul/ml-deployment-k8s-fastapi).
+- There is a counter part project using FastAPI instead of TFServing. If you wonder from how to convert TensorFlow model to ONNX optimized model to deploy it on k8s cluster, check out the [this repo](https://github.com/sayakpaul/ml-deployment-k8s-fastapi).
 
 ## Deploying the model as a service with k8s
 
@@ -30,17 +30,26 @@ The idea is to first create a custom TFServing docker image with a TensorFlow mo
         - Download [Kustomize](https://kustomize.io) toolkit to handle overlay configurations.
         - Update image tag with the currently built one with Kustomize
         - By provisioning `Deployment`, `Service`, and `ConfigMap`, the custom TFServing image gets deployed.
-            - NOTE: `ConfigMap` is only used for batching enabled scenarios to inject batching configurations dynamically into the `Deployment`.
+            - 👋 **NOTE**: `ConfigMap` is only used for batching enabled scenarios to inject batching configurations dynamically into the `Deployment`.
 
-If the entire workflow goes without any errors, you will see something silimar to the text below. As you see, two external interfaces(8500 for RESTful, 8501 for gRPC).
+If the entire workflow goes without any errors, you will see something silimar to the text below. As you see, two external interfaces(8500 for RESTful, 8501 for gRPC) are exposed.
 ```shell
 NAME             TYPE           CLUSTER-IP     EXTERNAL-IP     PORT(S)                          AGE
 tfs-server       LoadBalancer   xxxxxxxxxx     xxxxxxxxxx      8500:30869/TCP,8501:31469/TCP    23m
 kubernetes       ClusterIP      xxxxxxxxxx     <none>          443/TCP                         160m
+```
 
 ## Load testing
 
+We used [Locust](https://locust.io/) to conduct load tests for both TFServing and FastAPI. Below is the results for TFServing(gRPC) on a various setups, and you can find out the result for FastAPI(RESTful) in a [separate repo](https://github.com/sayakpaul/ml-deployment-k8s-fastapi). For specific instructions about how to install Locust and run a load test, follow [this separate document](./locust/README.md)
 
+👋 **NOTE**
+- Locust doesnt' have a built-in support to write a gRPC based client, so we have written one for ourselves. If you are curious about the implementation, check [this locustfile.py](./locust/locustfile.py) out.
+- For the legend in the plot, `n` means the number of nodes(pods), `c` means the number of CPU cores, `r` means the RAM capacity, `interop` means the number of `[--tensorflow_inter_op_parallelism](https://github.com/tensorflow/serving/blob/b5a11f1e5388c9985a6fc56a58c3421e5f78149f/tensorflow_serving/model_servers/main.cc#L147), and `batch` means the batching configuration is enabled with this [config](https://github.com/deep-diver/ml-deployment-k8s-tfserving/blob/main/.kube/experiments/8vCPU%2B64GB%2Binter_op2_w_batch/tfs-config.yaml).
+
+![](https://i.ibb.co/SBpbGvB/tfserving-load-test.png)
+
+From the results above, we see TFServing focuses more on **reliability** than performance(in terms of throughput). In any cases, no failures are observed, and the the response time is consistent. 
 
 ## Acknowledgements
 
