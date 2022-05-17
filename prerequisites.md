@@ -31,3 +31,7 @@ contents of the service account key file into the secret.
         --member=serviceAccount:${ACCOUNT}@${PROJECT_ID}.iam.gserviceaccount.com \
         --role roles/storage.objectCreator
     ```
+
+## Model release
+
+In order for GitHub Action to handle automatic deployment on GKE, it is assumed that you already have a released model. The model should be the form of `SavedModel`, and it has to be comparessed with the name of `saved_model.tar.gz`(or you can set the filename differently as in the environment variable in GitHub Action). If you want to find out the simplest way to get `SavedModel`, please check out our [TF_Serving.ipynb notebook](https://github.com/deep-diver/ml-deployment-k8s-tfserving/blob/main/notebooks/TF_Serving.ipynb)
