@@ -21,7 +21,7 @@ The idea is to first create a custom TFServing docker image with a TensorFlow mo
         - Connect to the designated GKE cluster
     - [Second subtask](https://github.com/deep-diver/ml-deployment-k8s-tfserving/blob/main/.github/actions/build/action.yml) handles building a custom TFServing image.
         - Download and extract the latest released model from the current repository
-        - Run the CPU optimized TFServing image which is compiled from the source code (FYI. image tag is `gcr.io/gcp-ml-172005/tfs-resnet-cpu-opt`)
+        - Run the CPU optimized TFServing image which is compiled from the source code (FYI. image tag is `gcr.io/gcp-ml-172005/tfs-resnet-cpu-opt`, and it is publicly available)
         - Copy the extracted model into the running container
         - Commit the changes of the running container and give it a new image name
         - Push the commited image
@@ -49,7 +49,7 @@ We used [Locust](https://locust.io/) to conduct load tests for both TFServing an
 
 ![](https://i.ibb.co/SBpbGvB/tfserving-load-test.png)
 
-From the results above, we see TFServing focuses more on **reliability** than performance(in terms of throughput). In any cases, no failures are observed, and the the response time is consistent. 
+From the results above, we see TFServing focuses more on **reliability** than performance(in terms of throughput). In any cases, no failures are observed, and the the response time is consistent. Also as stated in the [official document](https://www.tensorflow.org/tfx/serving/performance#3_the_server_hardware_binary), TFServing shows a better performance when it is deployed on fewer, larger(CPU, RAM) machines. However, there is a cost tradeoff, so our recommendation from the experiment is to choose `2n-8c-16r-interop4` configuration unless you care about dynamic batching capabilities. Or you can write a similar setup by referencing `2n-8c-64r-interop2-batch` but for smaller machines as well. 
 
 ## Acknowledgements
 
