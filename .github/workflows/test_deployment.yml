@@ -45,7 +45,7 @@ jobs:
           BASE_IMAGE_TAG: ${{ env.BASE_IMAGE_TAG }}
         
       - id: provision
-        uses: ./.github/actions/build
+        uses: ./.github/actions/provision
         with:
           NEW_IMAGE_TAG: ${{ steps.build.outputs.NEW_IMAGE_TAG }}
           TARGET_EXPERIMENT: ${{ env.TARGET_EXPERIMENT }}
