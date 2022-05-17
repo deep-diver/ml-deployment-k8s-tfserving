@@ -10,6 +10,7 @@ using [GitHub Actions](https://github.com/features/actions).
 
 👋 **Note**: Even though this project uses an image classification its structure and techniques can
 be used to serve other models as well.
+
 👋 **Note**: There is a counter part project using FastAPI instead of TFServing. If you want to know
 how to deploy FastAPI servers on k8s, please check out the [repo here](https://github.com/sayakpaul/ml-deployment-k8s-fastapi).
 
