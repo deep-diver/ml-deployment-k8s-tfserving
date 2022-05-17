@@ -47,6 +47,7 @@ jobs:
       - id: provision
         uses: ./.github/actions/provision
         with:
+          BASE_IMAGE_TAG: ${{ env.BASE_IMAGE_TAG }}
           NEW_IMAGE_TAG: ${{ steps.build.outputs.NEW_IMAGE_TAG }}
           TARGET_EXPERIMENT: ${{ env.TARGET_EXPERIMENT }}
           GKE_DEPLOYMENT_NAME: ${{ env.GKE_DEPLOYMENT_NAME }}
