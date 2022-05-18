@@ -41,7 +41,7 @@ kubernetes       ClusterIP      xxxxxxxxxx     <none>          443/TCP          
 
 ## Load testing
 
-We used [Locust](https://locust.io/) to conduct load tests for both TFServing and FastAPI. Below is the results for TFServing(gRPC) on a various setups, and you can find out the result for FastAPI(RESTful) in a [separate repo](https://github.com/sayakpaul/ml-deployment-k8s-fastapi). For specific instructions about how to install Locust and run a load test, follow [this separate document](./locust/README.md)
+We used [Locust](https://locust.io/) to conduct load tests for both TFServing and FastAPI. Below is the results for TFServing(gRPC) on a various setups, and you can find out the result for FastAPI(RESTful) in a [separate repo](https://github.com/sayakpaul/ml-deployment-k8s-fastapi). For specific instructions about how to install Locust and run a load test, follow [this separate document](./locust/README.md).
 
 👋 **NOTE**
 - Locust doesnt' have a built-in support to write a gRPC based client, so we have written one for ourselves. If you are curious about the implementation, check [this locustfile.py](./locust/locustfile.py) out.
