@@ -11,7 +11,7 @@ env:
   
   MODEL_RELEASE_REPO: "deep-diver/ml-deployment-k8s-tfserving"
   MODEL_RELEASE_FILE: "saved_model.tar.gz"
-  TARGET_EXPERIMENT: "2vCPU+4GB+inter_op2"
+  TARGET_EXPERIMENT: "8vCPU+16GB+inter_op4"
   
 on:
   release:
