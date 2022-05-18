@@ -5,7 +5,7 @@
 This project shows how to serve a TensorFlow image classification model as RESTful and **gRPC** based service with **TFServing**, Docker, and Kubernetes.
 The idea is to first create a custom TFServing docker image with a TensorFlow model, and then deploy it on a k8s cluster running on [Google Kubernetes Engine (GKE)](https://cloud.google.com/kubernetes-engine). Also we are using [GitHub Actions](https://github.com/features/actions) to automate all the procedures when a new TensorFlow model is released. 
 
-👋 **Note**
+👋 **NOTE**
 - Even though this project uses an image classification its structure and techniques can be used to serve other models as well.
 - There is a counter part project using FastAPI instead of TFServing. If you wonder from how to convert TensorFlow model to ONNX optimized model to deploy it on k8s cluster, check out the [this repo](https://github.com/sayakpaul/ml-deployment-k8s-fastapi).
 
