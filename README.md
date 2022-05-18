@@ -13,6 +13,12 @@ The idea is to first create a custom TFServing docker image with a TensorFlow mo
 
 - [Prerequisites](./prerequisites.md): Doing anything beforehand, you have to create GKE cluster and service accounts with appropriate roles. Also, you need to grasp GCP credentials to access any GCP resources in GitHub Action. Please check out the more detailed information [here](./prerequisites.md)
 
+```mermaid
+flowchart LR
+    A[First: Environmental Setup]-->B;
+    B[Second: Build TFServing Image]-->C[Third: Deploy on GKE];
+```
+
 - To deploy a custom TFServing docker image, we define [`deployment.yml`](https://github.com/deep-diver/ml-deployment-k8s-tfserving/blob/main/.github/workflows/deployment.yml) workflow file which is is only triggered when there is a new release for the current repository. It is subdivided into three parts to do the following tasks:
     - [First subtask](https://github.com/deep-diver/ml-deployment-k8s-tfserving/blob/main/.github/actions/setup/action.yml) handles the environmental setup.
         - GCP Authentication (GCP credential has to be provided in [GitHub Secret](https://docs.github.com/en/actions/security-guides/encrypted-secrets))
