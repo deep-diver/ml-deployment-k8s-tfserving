@@ -1,4 +1,4 @@
-# Deploying ML models with TFServing, Docker, and Kubernetes
+# Deploying ML models with CPU based TFServing, Docker, and Kubernetes
 
 *By: [Chansung Park](https://github.com/deep-diver) and [Sayak Paul](https://github.com/sayakpaul)*
 
