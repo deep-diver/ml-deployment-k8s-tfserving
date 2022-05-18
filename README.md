@@ -51,7 +51,7 @@ We used [Locust](https://locust.io/) to conduct load tests for both TFServing an
 
 From the results above, we see TFServing focuses more on **reliability** than performance(in terms of throughput). In any cases, no failures are observed, and the the response time is consistent. Also as stated in the [official document](https://www.tensorflow.org/tfx/serving/performance#3_the_server_hardware_binary), TFServing shows a better performance when it is deployed on fewer, larger(CPU, RAM) machines. However, there is a cost tradeoff, so **our recommendation from the experiment is to choose `2n-8c-16r-interop4` configuration** unless you care about dynamic batching capabilities. Or you can write a similar setup by referencing `2n-8c-64r-interop2-batch` but for smaller machines as well. 
 
-## Future work
+## Future works
 
 - [ ] More load test comparisons with more ML inference frameworks such as [NVIDIA's Triton Inference Server](https://developer.nvidia.com/nvidia-triton-inference-server), [KServe](https://www.kubeflow.org/docs/external-add-ons/kserve/kserve/), and [RedisAI](https://oss.redis.com/redisai/).
 
