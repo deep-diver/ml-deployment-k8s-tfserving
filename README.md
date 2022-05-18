@@ -37,6 +37,7 @@ flowchart LR
         - Update image tag with the currently built one with Kustomize
         - By provisioning `Deployment`, `Service`, and `ConfigMap`, the custom TFServing image gets deployed.
             - 👋 **NOTE**: `ConfigMap` is only used for batching enabled scenarios to inject batching configurations dynamically into the `Deployment`.
+    - In order to use this repo for your own purpose, please read [this document](https://github.com/deep-diver/ml-deployment-k8s-tfserving/blob/main/.kube/README.md) to know what environment variables have to be set.
 
 If the entire workflow goes without any errors, you will see something silimar to the text below. As you see, two external interfaces(8500 for RESTful, 8501 for gRPC) are exposed. You can check out the complete logs in the [past runs](https://github.com/deep-diver/ml-deployment-k8s-tfserving/runs/6473365174?check_suite_focus=true).
 ```shell
