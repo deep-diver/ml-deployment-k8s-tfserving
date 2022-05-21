@@ -10,7 +10,7 @@ This project shows how to serve a TensorFlow image classification model as RESTf
 
 ## Deploying the model as a service with k8s
 
-- [Prerequisites](./prerequisites.md): Doing anything beforehand, you have to create GKE cluster and service accounts with appropriate roles. Also, you need to grasp GCP credentials to access any GCP resources in GitHub Action. Please check out the more detailed information [here](./prerequisites.md)
+- [Prerequisites](./prerequisites.md): Doing anything beforehand, you have to create GKE cluster and service accounts with appropriate roles. Also, you need to grasp GCP credentials to access any GCP resources in GitHub Action. Please check out the more detailed information [here](./prerequisites.md).
 
 ```mermaid
 flowchart LR
