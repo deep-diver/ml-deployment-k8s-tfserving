@@ -56,7 +56,7 @@ We used [Locust](https://locust.io/) to conduct load tests for both TFServing an
 
 - This is a follow-up project after [ONNX optimized FastAPI deployment](https://github.com/sayakpaul/ml-deployment-k8s-fastapi), so we wanted to know how CPU optimized TensorFlow runtime could be compared to ONNX based one.
 - TFServing's [objective](https://www.tensorflow.org/tfx/serving/performance) is to maximize throughput while keeping tail-latency below certain bounds. We wanted to see if this is true, how reliably it provides a good throughput performance and how much throughput is sacrified to keep the reliability. 
-- According to the [TFServing's official document](https://www.tensorflow.org/tfx/serving/performance#3_the_server_hardware_binary), TFServing can achieve the best performance when it is deployed on fewer, larger(in terms of CPU, RAM) machines. We wanted to estimate how large of machine and how many nodes are enough. For this, we have prepared a set of different setups in combination of (# of nodes + # of CPU cores + RAM capacity).
+- According to the [TFServing's official document](https://www.tensorflow.org/tfx/serving/performance#3_the_server_hardware_binary), TFServing can achieve the best performance when it is deployed on fewer, larger (in terms of CPU, RAM) machines. We wanted to estimate how large of machine and how many nodes are enough. For this, we have prepared a set of different setups in combination of (# of nodes + # of CPU cores + RAM capacity).
 - TFServing has a number of [configurable options](https://github.com/tensorflow/serving/blob/b5a11f1e5388c9985a6fc56a58c3421e5f78149f/tensorflow_serving/model_servers/main.cc) to tune the performance. Especially, we wanted to find out how different values of [`--tensorflow_inter_op_parallelism`](https://github.com/tensorflow/serving/blob/b5a11f1e5388c9985a6fc56a58c3421e5f78149f/tensorflow_serving/model_servers/main.cc#L147), [`--tensorflow_intra_op_parallelism`](https://github.com/tensorflow/serving/blob/b5a11f1e5388c9985a6fc56a58c3421e5f78149f/tensorflow_serving/model_servers/main.cc#L141), and [`--enable_batching`](https://github.com/tensorflow/serving/blob/b5a11f1e5388c9985a6fc56a58c3421e5f78149f/tensorflow_serving/model_servers/main.cc#L75) options gives different results. 
 
 </details>    
@@ -68,6 +68,7 @@ We used [Locust](https://locust.io/) to conduct load tests for both TFServing an
 <details>
 
 From the results above, 
+
 - TFServing focuses more on **reliability** than performance(in terms of throughput). In any cases, no failures are observed, and the the response time is consistent. 
 - Req/s is lower than ONNX optimized FastAPI deployment, so it sacrifies some performance to achieve reliability. However, you need to notice that TFServing comes with lots of built-in features which are required in most of ML serving scenarios such as multi model serving, dynamic batching, model versioning, and so on. Those features possibly make TFServing heavier than simple FastAPI server.
     - **NOTE**: We spawned requests every seconds to clearly see how TFServing behaves with the increasing number of clients. So you can assume that the Req/s doesn't reflect the real world situation where clients try to send requests in any time.
@@ -79,6 +80,7 @@ From the results above,
 </details>    
     
 👋 **NOTE**
+
 - Locust doesnt' have a built-in support to write a gRPC based client, so we have written one for ourselves. If you are curious about the implementation, check [this locustfile.py](./locust/locustfile.py) out.
 - For the legend in the plot, `n` means the number of nodes(pods), `c` means the number of CPU cores, `r` means the RAM capacity, `interop` means the number of [`--tensorflow_inter_op_parallelism`](https://github.com/tensorflow/serving/blob/b5a11f1e5388c9985a6fc56a58c3421e5f78149f/tensorflow_serving/model_servers/main.cc#L147), and `batch` means the batching configuration is enabled with this [config](https://github.com/deep-diver/ml-deployment-k8s-tfserving/blob/main/.kube/experiments/8vCPU%2B64GB%2Binter_op2_w_batch/tfs-config.yaml).
 
@@ -90,5 +92,6 @@ From the results above,
 
 ## Acknowledgements
 
-[ML-GDE program](https://developers.google.com/programs/experts/) for providing GCP credit support.
+* [ML-GDE program](https://developers.google.com/programs/experts/) for providing GCP credit support.
+* [Hannes Hapke](https://www.linkedin.com/in/hanneshapke) for providing great insights for load-testing. 
 
