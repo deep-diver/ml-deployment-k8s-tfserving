@@ -2,11 +2,11 @@
 
 *By: [Chansung Park](https://github.com/deep-diver) and [Sayak Paul](https://github.com/sayakpaul)*
 
-This project shows how to serve a TensorFlow image classification model as RESTful and **gRPC** based service with **TFServing**, Docker, and Kubernetes. The idea is to first create a custom TFServing docker image with a TensorFlow model, and then deploy it on a k8s cluster running on [Google Kubernetes Engine (GKE)](https://cloud.google.com/kubernetes-engine). Also we are using [GitHub Actions](https://github.com/features/actions) to automate all the procedures when a new TensorFlow model is released. 
+This project shows how to serve a TensorFlow image classification model as RESTful and **gRPC** based services with **TFServing**, Docker, and Kubernetes. The idea is to first create a custom TFServing docker image with a TensorFlow model, and then deploy it on a k8s cluster running on [Google Kubernetes Engine (GKE)](https://cloud.google.com/kubernetes-engine). Also we are using [GitHub Actions](https://github.com/features/actions) to automate all the procedures when a new TensorFlow model is released. 
 
 👋 **NOTE**
 - Even though this project uses an image classification its structure and techniques can be used to serve other models as well.
-- There is a counter part project using FastAPI instead of TFServing. If you wonder from how to convert TensorFlow model to ONNX optimized model to deploy it on k8s cluster, check out the [this repo](https://github.com/sayakpaul/ml-deployment-k8s-fastapi).
+- There is a counter part of this project that uses FastAPI instead of TFServing. It shows how to convert a TensorFlow model to an ONNX optimized model and deploy it on a k8s cluster, check out the [this repo](https://github.com/sayakpaul/ml-deployment-k8s-fastapi).
 
 ## Deploying the model as a service with k8s
 
@@ -18,11 +18,11 @@ flowchart LR
     B[Second: Build TFServing Image]-->C[Third: Deploy on GKE];
 ```
 
-- To deploy a custom TFServing docker image, we define [`deployment.yml`](https://github.com/deep-diver/ml-deployment-k8s-tfserving/blob/main/.github/workflows/deployment.yml) workflow file which is is only triggered when there is a new release for the current repository. It is subdivided into three parts to do the following tasks:
+- To deploy a custom TFServing Docker image, we define [`deployment.yml`](https://github.com/deep-diver/ml-deployment-k8s-tfserving/blob/main/.github/workflows/deployment.yml) workflow file which is is only triggered when there is a new release for the current repository. It is subdivided into three parts to do the following tasks:
     - [First subtask](https://github.com/deep-diver/ml-deployment-k8s-tfserving/blob/main/.github/actions/setup/action.yml) handles the environmental setup.
         - GCP Authentication (GCP credential has to be provided in [GitHub Secret](https://docs.github.com/en/actions/security-guides/encrypted-secrets))
-        - Install gcloud CLI toolkit
-        - Authenticate Docker to push images to GCR(Google Cloud Registry)
+        - Install `gcloud` CLI toolkit
+        - Authenticate Docker to push images to GCR (Google Cloud Registry)
         - Connect to the designated GKE cluster
     - [Second subtask](https://github.com/deep-diver/ml-deployment-k8s-tfserving/blob/main/.github/actions/build/action.yml) handles building a custom TFServing image.
         - Download and extract the latest released model from the current repository
@@ -39,6 +39,7 @@ flowchart LR
     - In order to use this repo for your own purpose, please read [this document](https://github.com/deep-diver/ml-deployment-k8s-tfserving/blob/main/how_to_setup.md) to know what environment variables have to be set.
 
 If the entire workflow goes without any errors, you will see something silimar to the text below. As you see, two external interfaces(8500 for RESTful, 8501 for gRPC) are exposed. You can check out the complete logs in the [past runs](https://github.com/deep-diver/ml-deployment-k8s-tfserving/runs/6473365174?check_suite_focus=true).
+
 ```shell
 NAME             TYPE           CLUSTER-IP     EXTERNAL-IP     PORT(S)                          AGE
 tfs-server       LoadBalancer   xxxxxxxxxx     xxxxxxxxxx      8500:30869/TCP,8501:31469/TCP    23m
@@ -47,7 +48,7 @@ kubernetes       ClusterIP      xxxxxxxxxx     <none>          443/TCP          
 
 ## Load testing
 
-We used [Locust](https://locust.io/) to conduct load tests for both TFServing and FastAPI. Below is the results for TFServing(gRPC) on a various setups, and you can find out the result for FastAPI(RESTful) in a [separate repo](https://github.com/sayakpaul/ml-deployment-k8s-fastapi). For specific instructions about how to install Locust and run a load test, follow [this separate document](./locust/README.md).
+We used [Locust](https://locust.io/) to conduct load tests for both TFServing and FastAPI. Below is the results for TFServing (gRPC) on a various setups, and you can find out the result for FastAPI (RESTful) in a [separate repo](https://github.com/sayakpaul/ml-deployment-k8s-fastapi). For specific instructions about how to install Locust and run a load test, follow [this separate document](./locust/README.md).
 
 ### Hypothesis
 
