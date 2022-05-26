@@ -2,7 +2,8 @@
 
 *By: [Chansung Park](https://github.com/deep-diver) and [Sayak Paul](https://github.com/sayakpaul)*
 
-This project shows how to serve a TensorFlow image classification model as RESTful and **gRPC** based services with **TFServing**, Docker, and Kubernetes. The idea is to first create a custom TFServing docker image with a TensorFlow model, and then deploy it on a k8s cluster running on [Google Kubernetes Engine (GKE)](https://cloud.google.com/kubernetes-engine). **_We are particularly intersted** in deploying **TFServing via gRPC on GKE** by using **[GitHub Actions](https://github.com/features/actions)** to automate all the procedures when a new TensorFlow model is released._**
+This project shows how to serve a TensorFlow image classification model as RESTful and **gRPC** based services with **TFServing**, Docker, and Kubernetes. The idea is to first create a custom TFServing docker image with a TensorFlow model, and then deploy it on a k8s cluster running on [Google Kubernetes Engine (GKE)](https://cloud.google.com/kubernetes-engine). We are particularly interested in deploying the model as **a gRPC endpoint with TF Serving on a k8s cluster using GKE** and also with [GitHub Actions](https://github.com/features/actions) to automate all the procedures when a new TensorFlow model is released.
+
 
 👋 **NOTE**
 - Even though this project uses an image classification its structure and techniques can be used to serve other models as well.
@@ -48,7 +49,7 @@ kubernetes       ClusterIP      xxxxxxxxxx     <none>          443/TCP          
 
 ## How to perform gRPC inference 
 
-If you wonder how to perform gRPC inference, please check [grpc_client.py](https://github.com/deep-diver/ml-deployment-k8s-tfserving/tree/main/client_grpc_client.py) out. [TFServing API](https://github.com/tensorflow/serving/tree/master/tensorflow_serving/example) provides handy features to construct protobuf request message via `predict_pb2.PredictRequest()`, and `tf.make_tensor_proto(image)` creates protobuf compatible values from `Tensor` data type.
+If you wonder how to perform gRPC inference, [grpc_client.py](https://github.com/deep-diver/ml-deployment-k8s-tfserving/tree/main/client_grpc_client.py) provides code to perform inference with the gRPC client ([grpc_client.py](https://github.com/deep-diver/ml-deployment-k8s-tfserving/tree/main/client_grpc_client.py) contains `$ENDPOINT` placeholder. To replace it with your own endpoint, you can `envsubst < grpc_client.py > grpc_client.py` after defining `ENDPOINT` environment variable). [TFServing API](https://github.com/tensorflow/serving/tree/master/tensorflow_serving/example) provides handy features to construct protobuf request message via `predict_pb2.PredictRequest()`, and `tf.make_tensor_proto(image)` creates protobuf compatible values from `Tensor` data type.
 
 ## Load testing
 
