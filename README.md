@@ -3,7 +3,7 @@
 *By: [Chansung Park](https://github.com/deep-diver) and [Sayak Paul](https://github.com/sayakpaul)*
 
 <div align="center">
-<img src="https://i.postimg.cc/SsZhX0Yx/tfserving.png" width="60%"/>
+<img src="https://i.postimg.cc/SsZhX0Yx/tfserving.png" width="60%"/><br>
 <sup>Figure developed by Chansung Park</sup>
 </div>
 
