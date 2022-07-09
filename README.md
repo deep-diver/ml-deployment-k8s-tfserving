@@ -3,7 +3,7 @@
 *By: [Chansung Park](https://github.com/deep-diver) and [Sayak Paul](https://github.com/sayakpaul)*
 
 <div align="center">
-<img src="https://i.postimg.cc/SsZhX0Yx/tfserving.png" width="60%"/><br>
+<img src="https://i.ibb.co/qBZMNFg/Screen-Shot-2022-07-09-at-9-26-47-AM.png" width="60%"/><br>
 <sup>Figure developed by Chansung Park</sup>
 </div>
 
@@ -72,6 +72,8 @@ We used [Locust](https://locust.io/) to conduct load tests for both TFServing an
 </details>    
     
 ![](https://i.ibb.co/SBpbGvB/tfserving-load-test.png)
+
+![](https://i.ibb.co/vjjb5kW/download-1.png)
     
 ### Conclusion
 
