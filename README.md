@@ -70,10 +70,10 @@ We used [Locust](https://locust.io/) to conduct load tests for both TFServing an
 - TFServing has a number of [configurable options](https://github.com/tensorflow/serving/blob/b5a11f1e5388c9985a6fc56a58c3421e5f78149f/tensorflow_serving/model_servers/main.cc) to tune the performance. Especially, we wanted to find out how different values of [`--tensorflow_inter_op_parallelism`](https://github.com/tensorflow/serving/blob/b5a11f1e5388c9985a6fc56a58c3421e5f78149f/tensorflow_serving/model_servers/main.cc#L147), [`--tensorflow_intra_op_parallelism`](https://github.com/tensorflow/serving/blob/b5a11f1e5388c9985a6fc56a58c3421e5f78149f/tensorflow_serving/model_servers/main.cc#L141), and [`--enable_batching`](https://github.com/tensorflow/serving/blob/b5a11f1e5388c9985a6fc56a58c3421e5f78149f/tensorflow_serving/model_servers/main.cc#L75) options gives different results. 
 
 </details>    
-    
-![](https://i.ibb.co/SBpbGvB/tfserving-load-test.png)
 
-![](https://i.ibb.co/vjjb5kW/download-1.png)
+<!--- ![](https://i.ibb.co/SBpbGvB/tfserving-load-test.png) --->
+
+![](https://i.ibb.co/wJ42g2Q/download-2.png)
     
 ### Conclusion
 
