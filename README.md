@@ -14,6 +14,8 @@ This project shows how to serve a TensorFlow image classification model as RESTf
 - Even though this project uses an image classification its structure and techniques can be used to serve other models as well.
 - There is a counter part of this project that uses FastAPI instead of TFServing. It shows how to convert a TensorFlow model to an ONNX optimized model and deploy it on a k8s cluster, check out the [this repo](https://github.com/sayakpaul/ml-deployment-k8s-fastapi).
 
+**Update Jule 29 2022**: We published a blog post on load-testing the REST endpoint. Check it out on the TensorFlow blog [here](https://blog.tensorflow.org/2022/07/load-testing-TensorFlow-Servings-REST-interface.html).
+
 ## Deploying the model as a service with k8s
 
 - [Prerequisites](./prerequisites.md): Doing anything beforehand, you have to create GKE cluster and service accounts with appropriate roles. Also, you need to grasp GCP credentials to access any GCP resources in GitHub Action. Please check out the more detailed information [here](./prerequisites.md).
